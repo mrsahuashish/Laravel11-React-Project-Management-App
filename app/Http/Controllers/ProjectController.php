@@ -6,6 +6,7 @@ use App\Models\project;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreprojectRequest;
 use App\Http\Requests\UpdateprojectRequest;
+use App\Http\Resources\ProjectResource;
 
 class ProjectController extends Controller
 {
@@ -14,7 +15,25 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        $query = Project::query();
+
+        $sortFields = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        if (request('name')) {
+            $query->where("name", "like", "%" . request("name") . '%');
+        }
+
+        if (request('status')) {
+            $query->where("status", request("status"));
+        }
+
+        $projects = $query->orderBy($sortFields, $sortDirection)->paginate(10)->onEachSide(1);
+
+        return inertia("Project/Index", [
+            "projects" => ProjectResource::collection($projects),
+            'queryParams' => request()->query() ?: null,
+        ]);
     }
 
     /**
