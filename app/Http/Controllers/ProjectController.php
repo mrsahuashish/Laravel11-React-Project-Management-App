@@ -10,6 +10,8 @@ use App\Http\Resources\ProjectResource;
 
 class ProjectController extends Controller
 {
+    public static $wrap = false;
+
     /**
      * Display a listing of the resource.
      */
@@ -57,7 +59,24 @@ class ProjectController extends Controller
      */
     public function show(project $project)
     {
-        //
+        $query = $project->tasks();
+        
+        $sortFields = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        if (request('name')) {
+            $query->where("name", "like", "%" . request("name") . '%');
+        }
+
+        if (request('status')) {
+            $query->where("status", request("status"));
+        }
+
+        $tasks = $query->orderBy($sortFields, $sortDirection)->paginate(10)->onEachSide(1);
+        
+       return inertia('Project/Show',[
+        'project' => new ProjectResource($project),
+       ]);
     }
 
     /**
