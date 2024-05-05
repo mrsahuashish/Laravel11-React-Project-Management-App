@@ -102,6 +102,6 @@ class UserController extends Controller
     {
         $name = $user->name;
         $user->delete();
-        return to_route('user.index')->with('success',"User \"$name\" was deleted");
+        return to_route('user.index')->with('success', "User \"$name\" was deleted");
     }
 }
