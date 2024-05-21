@@ -1,9 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
-import {
-    USER_STATUS_CLASS_MAP,
-    USER_STATUS_TEXT_MAP,
-} from "@/constants.jsx";
+import { USER_STATUS_CLASS_MAP, USER_STATUS_TEXT_MAP } from "@/constants.jsx";
 import TasksTable from "../Task/TasksTable";
 export default function Show({ auth, success, user, tasks, queryParams }) {
     return (
@@ -85,9 +82,7 @@ export default function Show({ auth, success, user, tasks, queryParams }) {
                                         <label className="font-bold text-lg">
                                             Due Date
                                         </label>
-                                        <p className="mt-1">
-                                            {user.due_date}
-                                        </p>
+                                        <p className="mt-1">{user.due_date}</p>
                                     </div>
                                     <div className="mt-4">
                                         <label className="font-bold text-lg">
